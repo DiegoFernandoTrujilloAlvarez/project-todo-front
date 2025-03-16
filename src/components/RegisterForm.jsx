@@ -5,7 +5,8 @@ const RegisterForm = () => {
   const [formData, setFormData] = useState({
     firt_name: '',
     last_name: '',
-    email: ''
+    email: '',
+    password: '',
   });
 
   const handleSubmit = async (e) => {
@@ -47,6 +48,14 @@ const RegisterForm = () => {
         name="email"
         placeholder="Correo electrónico"
         value={formData.email}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Contraseña"
+        value={formData.password}
         onChange={handleChange}
         required
       />

@@ -1,18 +1,22 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
 const TaskForm = () => {
+  const { token } = useContext(AuthContext);
   const [taskData, setTaskData] = useState({
-    user_id: '',
     description: '',
-    created_on: '',
     date_to_do: '',
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://project-todo-76ey.onrender.com/tasks/', taskData);
+      const response = await axios.post('https://project-todo-76ey.onrender.com/tasks/', taskData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       alert('Tarea creada: ' + taskData.description);
     } catch (error) {
       alert('Error: ' + error.response.data.message);
@@ -26,25 +30,10 @@ const TaskForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Registro de Tareas</h2>
-      <input
-        type="number"
-        name="user_id"
-        placeholder="ID usuario"
-        value={taskData.user_id}
-        onChange={handleChange}
-        required
-      />
       <textarea
         name="description"
         placeholder="Descripción"
         value={taskData.description}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="date"
-        name="created_on"
-        value={taskData.created_on}
         onChange={handleChange}
         required
       />
