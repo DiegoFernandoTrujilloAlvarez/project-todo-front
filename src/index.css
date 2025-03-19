@@ -135,3 +135,55 @@ button:hover {
   color: #4a5568;
   text-align: center;
 }
+
+/* Estilos para el estado de carga */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Deshabilitar inputs durante la carga */
+button[disabled], input[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login-form button {
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover:not([disabled]) {
+  background-color: #1e6fd9;
+}
+
+.register-form button {
+  transition: background-color 0.3s ease;
+}
+
+.register-form button:hover:not([disabled]) {
+  background-color: #1e6fd9;
+}
+
+.task-form button {
+  transition: background-color 0.3s ease;
+}
+
+.task-form button:hover:not([disabled]) {
+  background-color: #1e6fd9;
+}

@@ -8,9 +8,11 @@ const TaskForm = () => {
     description: '',
     date_to_do: '',
   });
+  const [isLoading, setIsLoading] = useState(false); // Nuevo estado
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Activar estado de carga
     try {
       const response = await axios.post('https://project-todo-76ey.onrender.com/tasks/', taskData, {
         headers: {
@@ -18,8 +20,14 @@ const TaskForm = () => {
         }
       });
       alert('Tarea creada: ' + taskData.description);
+      setTaskData({
+        description: '',
+        date_to_do: '',
+      });
     } catch (error) {
       alert('Error: ' + error.response.data.message);
+    } finally {
+      setIsLoading(false); // Desactivar carga sin importar el resultado
     }
   };
 
@@ -28,7 +36,7 @@ const TaskForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="task-form">
       <h2>Registro de Tareas</h2>
       <textarea
         name="description"
@@ -36,6 +44,7 @@ const TaskForm = () => {
         value={taskData.description}
         onChange={handleChange}
         required
+        disabled={isLoading}
       />
       <input
         type="date"
@@ -43,8 +52,16 @@ const TaskForm = () => {
         value={taskData.date_to_do}
         onChange={handleChange}
         required
+        disabled={isLoading}
       />
-      <button type="submit">Crear Tarea</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? (
+          <div className="loading-indicator">
+            <div className="spinner"></div>
+            Creando tarea...
+          </div>
+        ) : 'Crear tarea'}
+      </button>
     </form>
   );
 };

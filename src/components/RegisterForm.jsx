@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -8,15 +9,21 @@ const RegisterForm = () => {
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false); // Nuevo estado
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Activar estado de carga
     try {
         console.log(formData);
       const response = await axios.post('https://project-todo-76ey.onrender.com/users/', formData);
       alert('Usuario registrado: ' + formData.email);
+      navigate('/login');
     } catch (error) {
       alert('Error: ' + error.response.data.message);
+    } finally {
+      setIsLoading(false); // Desactivar carga sin importar el resultado
     }
   };
 
@@ -25,7 +32,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="register-form">
       <h2>Registro de Usuario</h2>
       <input
         type="text"
@@ -34,6 +41,7 @@ const RegisterForm = () => {
         value={formData.firt_name}
         onChange={handleChange}
         required
+        disabled={isLoading}
       />
       <input
         type="text"
@@ -42,6 +50,7 @@ const RegisterForm = () => {
         value={formData.last_name}
         onChange={handleChange}
         required
+        disabled={isLoading}
       />
       <input
         type="email"
@@ -50,6 +59,7 @@ const RegisterForm = () => {
         value={formData.email}
         onChange={handleChange}
         required
+        disabled={isLoading}
       />
       <input
         type="password"
@@ -58,8 +68,16 @@ const RegisterForm = () => {
         value={formData.password}
         onChange={handleChange}
         required
+        disabled={isLoading}
       />
-      <button type="submit">Registrar</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? (
+          <div className="loading-indicator">
+            <div className="spinner"></div>
+            Registrando...
+          </div>
+        ) : 'Registrar'}
+      </button>
     </form>
   );
 };
